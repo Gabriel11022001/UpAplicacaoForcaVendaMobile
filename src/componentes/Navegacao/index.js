@@ -3,6 +3,8 @@ import SplashScreen from "../../views/SplashScreen";
 import NavegacaoStack from "../NavegacaoStack";
 import Login from "../../views/Login";
 import Home from "../../views/Home";
+import GestaoCategorias from "../../views/GestaoCategorias";
+import CadastroCategoria from "../../views/CadastroCategoria";
 
 const Navegacao = () => {
 
@@ -21,6 +23,16 @@ const Navegacao = () => {
             nome: "home",
             componente: Home,
             titulo: "Home"
+        },
+        {
+            nome: "categorias",
+            componente: GestaoCategorias,
+            titulo: "Categorias"
+        },
+        {
+            nome: "cadastro_categoria",
+            componente: CadastroCategoria,
+            titulo: "Cadastro de categoria"
         }
     ];
 

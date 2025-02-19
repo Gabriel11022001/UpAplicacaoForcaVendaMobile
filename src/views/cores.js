@@ -6,5 +6,6 @@ export default {
     corFundoTelas: "#f1f2f6",
     principal: "#0c2461",
     corBordas: "#d9dadd",
-    erro: "#EA2027"
+    erro: "#EA2027",
+    sucesso: "#009432"
 };
