@@ -5,6 +5,9 @@ import Login from "../../views/Login";
 import Home from "../../views/Home";
 import GestaoCategorias from "../../views/GestaoCategorias";
 import CadastroCategoria from "../../views/CadastroCategoria";
+import Notificacoes from "../../views/Notificacoes";
+import Produtos from "../../views/Produtos";
+import DetalhesProduto from "../../views/DetalhesProduto";
 
 const Navegacao = () => {
 
@@ -33,6 +36,21 @@ const Navegacao = () => {
             nome: "cadastro_categoria",
             componente: CadastroCategoria,
             titulo: "Cadastro de categoria"
+        },
+        {
+            nome: "notificacoes",
+            componente: Notificacoes,
+            titulo: "Notificações"
+        },
+        {
+            nome: "produtos",
+            componente: Produtos,
+            titulo: "Produtos"
+        },
+        {
+            nome: "detalhes_produto",
+            componente: DetalhesProduto,
+            titulo: "Produto"
         }
     ];
 

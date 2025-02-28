@@ -1,11 +1,16 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import cores from "../../views/cores";
 
-export default function BotaoFundoTransparente({ textoBotao, onPressionar }) {
+export default function BotaoFundoTransparente({ textoBotao, onPressionar, margemBaixo }) {
 
     return (
         <TouchableOpacity
-            style={ estilosBotaoFundoTransparente.botaoFundoTransparente }
+            style={ [
+                estilosBotaoFundoTransparente.botaoFundoTransparente,
+                {
+                    marginBottom: margemBaixo
+                }
+            ] }
             onPress={ onPressionar } >
             <Text style={ estilosBotaoFundoTransparente.textoBotao }>{ textoBotao }</Text>
         </TouchableOpacity>
