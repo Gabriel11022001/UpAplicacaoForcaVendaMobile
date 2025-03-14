@@ -116,9 +116,6 @@ const CadastroCategoria = (props) => {
                 onRedirecionar={ () => {
                     // redirecionar usuário para a tela de datalhes da categoria
                 } } />
-            <NavegacaoInferior onRedirecionar={ (telaRedirecionar) => {
-                props.navigation.navigate(telaRedirecionar);
-            } } />
             <ScrollView>
                 <TituloTela titulo="Cadastro de categoria" /> 
                 <LabelCampo campo="Nome da categoria" obrigatorio={ true } margemTopo={ 40 } />

@@ -8,6 +8,9 @@ import CadastroCategoria from "../../views/CadastroCategoria";
 import Notificacoes from "../../views/Notificacoes";
 import Produtos from "../../views/Produtos";
 import DetalhesProduto from "../../views/DetalhesProduto";
+import CadastroProduto from "../../views/CadastroProduto";
+import CadastroCliente from "../../views/CadastroCliente";
+import Clientes from "../../views/Clientes";
 
 const Navegacao = () => {
 
@@ -51,6 +54,21 @@ const Navegacao = () => {
             nome: "detalhes_produto",
             componente: DetalhesProduto,
             titulo: "Produto"
+        },
+        {
+            nome: "cadastro_produto",
+            componente: CadastroProduto,
+            titulo: "Cadastro de produto"
+        },
+        {
+            nome: "cadastro_cliente",
+            componente: CadastroCliente,
+            titulo: "Cadastro de cliente"
+        },
+        {
+            nome: "clientes",
+            componente: Clientes,
+            titulo: "Clientes"
         }
     ];
 

@@ -46,6 +46,7 @@ const NavegacaoInferior = (props) => {
         return opcoesApresentar.map((opcaoApresentar) => {
 
             return <TouchableOpacity 
+                key={ opcaoApresentar.titulo }
                 style={ estilosNavegacaoInferior.estiloOpcaoApresentar }
                 onPress={ () => {
                     redirecionar(opcaoApresentar.telaRedirecionar);

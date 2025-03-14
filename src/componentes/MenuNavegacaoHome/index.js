@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import cores from "../../views/cores";
-import { FontAwesome5, MaterialIcons } from 'react-native-vector-icons';
+import { FontAwesome5, MaterialIcons, Ionicons } from 'react-native-vector-icons';
 
 export default function MenuNavegacaoHome({ navigation }) {
 
@@ -40,8 +40,35 @@ export default function MenuNavegacaoHome({ navigation }) {
             icone: "price-change",
             telaRedirecionar: "vendas",
             habilitado: true
+        },
+        {
+            titulo: "Cadastro de clientes",
+            icone: "person-add-outline",
+            telaRedirecionar: "cadastro_cliente",
+            habilitado: true
+        },
+        {
+            titulo: "Clientes",
+            icone: "person-outline",
+            telaRedirecionar: "clientes",
+            habilitado: true
         }
     ];
+
+    const obterIconeCorreto = (icone) => {
+
+        if (icone == "price-change") {
+
+            return <MaterialIcons name={ icone } size={ 40 } color={ cores.principal } />;
+        }
+
+        if (icone == "person-add-outline" || icone == "person-outline") {
+
+            return <Ionicons name={ icone } size={ 40 } color={ cores.principal } />
+        }
+
+        return <FontAwesome5 name={ icone } size={ 30 } color={ cores.principal } />;
+    }
 
     const obterOpcoesMenu = () => {
 
@@ -54,11 +81,12 @@ export default function MenuNavegacaoHome({ navigation }) {
 
             return (
                 <TouchableOpacity
+                    key={ opcao.titulo }
                     style={ estilosMenuNavegacaoHome.opcaoMenu }
                     onPress={ () => {
                         navigation.navigate(opcao.telaRedirecionar);
                     } }>
-                    { opcao.icone == "price-change" ? <MaterialIcons name={ opcao.icone } size={ 40 } color={ cores.principal } /> : <FontAwesome5 name={ opcao.icone } size={ 30 } color={ cores.principal } /> }
+                    { obterIconeCorreto(opcao.icone) }
                     <Text style={ estilosMenuNavegacaoHome.textoOpcaoMenu }>{ opcao.titulo.toUpperCase() }</Text>
                 </TouchableOpacity>
             );
@@ -78,6 +106,7 @@ const estilosMenuNavegacaoHome =  StyleSheet.create({
         marginStart: "5%",
         marginEnd: "5%",
         marginTop: 20,
+        marginBottom: 200,
         flexDirection: "row",
         flexWrap: "wrap",
         alignItems: "center",

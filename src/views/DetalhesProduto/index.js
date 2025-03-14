@@ -6,12 +6,13 @@ import BotaoFundoTransparente from "../../componentes/BotaoFundoTransparente";
 import BotaoDeletar from "../../componentes/BotaoDeletar";
 import BottomSheetConfirmar from "../../componentes/BottomSheetConfirmar";
 import Loader from "../../componentes/Loader";
+import HistoricoEstoque from "../../componentes/HistoricoEstoque";
 
 export default function DetalhesProduto(props) {
 
     const produtoId = props.route.params != null ? props.route.params.idProduto : null;
-    const [produto, setProduto] = useState({});
-    const [apresentarLoader, setApresentarLoader] = useState(false);
+    const [ produto, setProduto ] = useState({});
+    const [ apresentarLoader, setApresentarLoader ] = useState(false);
     const [ apresentarBottomSheetConfirmarDeletarProduto, setApresentarBottomSheetConfirmarDeletarProduto ] = useState(false);
     const [ msgLoader, setMsgLoader ] = useState("Carregando, aguarde...");
 
@@ -85,6 +86,33 @@ export default function DetalhesProduto(props) {
                         <Text>Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado. Se popularizou na década de 60, quando a Letraset lançou decalques contendo passagens de Lorem Ipsum, e mais recentemente quando passou a ser integrado a softwares de editoração eletrônica como Aldus PageMaker.</Text>
                     </View>
                 </View>
+                <HistoricoEstoque historicoEstoque={ [
+                    {
+                        historicoProdutoId: 1,
+                        operacao: "entrada",
+                        data: "11/02/2020"
+                    },
+                    {
+                        historicoProdutoId: 2,
+                        operacao: "entrada",
+                        data: "11/02/2021"
+                    },
+                    {
+                        historicoProdutoId: 3,
+                        operacao: "saida",
+                        data: "11/02/2020"
+                    },
+                    {
+                        historicoProdutoId: 4,
+                        operacao: "saida",
+                        data: "11/02/2020"
+                    },
+                    {
+                        historicoProdutoId: 5,
+                        operacao: "entrada",
+                        data: "11/02/2020"
+                    }
+                ] } />
                 { /** editar produto */}
                 <BotaoFundoTransparente textoBotao="Editar" onPressionar={() => {
                     editarProduto();

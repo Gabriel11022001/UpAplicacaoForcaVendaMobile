@@ -23,7 +23,7 @@ export default function BottomSheetConfirmar(props) {
                     <Text style={ estilosBottomSheetConfirmar.mensagem }>{ props.mensagem }</Text>
                 </View>
                 { obterBotao() }
-                <BotaoFundoTransparente textoBotao="Cancelar" onPressionar={ props.onCancelar } />
+                { props.apresentarBotaoCancelar ? <BotaoFundoTransparente textoBotao="Cancelar" onPressionar={ props.onCancelar } /> : false }
             </View>
         </View>
     );

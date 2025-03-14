@@ -1,4 +1,4 @@
 {
     "ambiente": "teste",
-    "url": "https://192.168.1.4:7158/api"
+    "url": "http://192.168.1.4:5001/api"
 }
