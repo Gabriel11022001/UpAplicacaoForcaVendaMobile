@@ -2,16 +2,79 @@ import { ScrollView, StyleSheet, View } from "react-native"
 import Tela from "../../componentes/Tela"
 import TituloTela from "../../componentes/TituloTela";
 import RadioBotao from "../../componentes/RadioBotao";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import cores from "../cores";
 import LabelCampo from "../../componentes/LabelCampo";
+import Botao from "../../componentes/Botao";
+import BotaoFundoTransparente from "../../componentes/BotaoFundoTransparente";
+import ProgressoCadastroCliente from "../../componentes/ProgressoCadastroCliente";
+import CampoTextoPadrao from "../../componentes/CampoTextoPadrao";
+import { useFocusEffect } from "@react-navigation/native";
+import { useGlobalContext } from "../../contextoGlobal/contextoGlobal";
 
 const CadastroCliente = (props) => {
 
-    const idClienteEditar = props.navigation.route != undefined ? (props.navigation.route.params.idCliente ?? 0) : 0;
+    const { state, dispatch } = useGlobalContext();
+    const [ idClienteEditar, setIdClienteEditar ] = useState(0);
     const [ apresentarLoader, setApresentarLoader ] = useState(false);
     const [ tipoPessoaFisicaSelecionada, setTipoPessoaFisicaSelecionada ] = useState(true);
     const [ tipoPessoaJuridicaSelecionada, setTipoPessoaJuridicaSelecionada ] = useState(false);
+
+    // geral
+    const [ telefonePrincipal, setTelefonePrincipal ] = useState("");
+    const [ telefoneSecundario, setTelefoneSecundario ] = useState("");
+    const [ emailPrincipal, setEmailPrincipal ] = useState("");
+    const [ emailSecundario, setEmailSecundario ] = useState("");
+
+    // pessoa fisica
+    const [ nome, setNome ] = useState("");
+    const [ cpf, setCpf ] = useState("");
+    const [ dataNascimento, setDataNascimento ] = useState("");
+    const [ genero, setGenero ] = useState(0);
+    const [ rg, setRg ] = useState("");
+
+    // pessoa juridica
+    const [ razaoSocial, setRazaoSocial ] = useState("");
+    const [ cnpj, setCnpj ] = useState("");
+    const [ dataFundacao, setDataFundacao ] = useState("");
+    const [ valorPatrimonio, setValorPatrimonio ] = useState(0);
+
+    // quando carregar a tela
+    useEffect(() => {
+
+        if (props.route != null && props.route.params != null && props.route.params.idCliente != null) {
+            setIdClienteEditar(props.route.params.idCliente);
+        } else if (state != null && state.clientePassadoEntreTelas != null) {
+            setIdClienteEditar(state.clientePassadoEntreTelas.id);
+        }
+
+        if (state != null && state.clientePassadoEntreTelas != null) {
+
+            if (state.clientePassadoEntreTelas.tipoPessoa == "pf") {
+                console.log("é pf");
+                setTipoPessoaFisicaSelecionada(true);
+                setTipoPessoaJuridicaSelecionada(false);
+            } else {    
+                console.log("é pj");
+                setTipoPessoaJuridicaSelecionada(true);
+                setTipoPessoaFisicaSelecionada(false);
+            }
+
+            setTelefonePrincipal(state.clientePassadoEntreTelas.telefonePrincipal);
+            setTelefoneSecundario(state.clientePassadoEntreTelas.telefoneSecundario);
+            setEmailPrincipal(state.clientePassadoEntreTelas.emailPrincipal);
+            setEmailSecundario(state.clientePassadoEntreTelas.emailSecundario);
+            setNome(state.clientePassadoEntreTelas.nome);
+            setCpf(state.clientePassadoEntreTelas.cpf);
+            setDataNascimento(state.clientePassadoEntreTelas.dataNascimento);
+            setGenero(state.clientePassadoEntreTelas.genero);
+            setRazaoSocial(state.clientePassadoEntreTelas.razaoSocial);
+            setCnpj(state.clientePassadoEntreTelas.cnpj);
+            setDataFundacao(state.clientePassadoEntreTelas.dataFundacao);
+            setValorPatrimonio(state.clientePassadoEntreTelas.valorPatrimonio);
+        }
+
+    }, []);
 
     useEffect(() => {
 
@@ -43,10 +106,87 @@ const CadastroCliente = (props) => {
         return ContainerPessoaJuridica();
     }
 
+    const ContainerGeralCliente = () => {
+
+        return <View>
+            { /** telefone principal */ }
+            <LabelCampo campo="Telefone principal" obrigatorio={ true } margemTopo={ 40 } />
+            <CampoTextoPadrao
+                dadoControle={ telefonePrincipal }
+                habilitado={ true }
+                placeholder="Digite o telefone principal..."
+                tamanhoMaximoCampo={ 255 }
+                onAlterarValor={ (telefonePrincipal) => setTelefonePrincipal(telefonePrincipal) } />
+            { /** telefone secundário */ }
+            <LabelCampo campo="Telefone secundário" obrigatorio={ false } margemTopo={ 20 } />
+            <CampoTextoPadrao
+                dadoControle={ telefoneSecundario }
+                habilitado={ true }
+                placeholder="Digite o telefone secundário..."
+                tamanhoMaximoCampo={ 255 }
+                onAlterarValor={ (telefoneSecundario) => setTelefoneSecundario(telefoneSecundario) } />
+            { /** e-mail principal */ }
+            <LabelCampo campo="E=mail principal" obrigatorio={ true } margemTopo={ 20 } />
+            <CampoTextoPadrao
+                dadoControle={ emailPrincipal }
+                habilitado={ true }
+                placeholder="Digite o e-mail principal..."
+                tamanhoMaximoCampo={ 255 }
+                onAlterarValor={ (emailPrincipal) => setEmailPrincipal(emailPrincipal) } />
+            { /** e-mail secundário */ }
+            <LabelCampo campo="E=mail secundário" obrigatorio={ false } margemTopo={ 20 } />
+            <CampoTextoPadrao
+                dadoControle={ emailSecundario }
+                habilitado={ true }
+                placeholder="Digite o e-mail secundário..."
+                tamanhoMaximoCampo={ 255 }
+                onAlterarValor={ (emailSecundario) => setEmailSecundario(emailSecundario) } />
+        </View>
+    }
+
     const ContainerPessoaFisica = () => {
 
         return <View>
-            <LabelCampo campo="Nome" obrigatorio={ true } margemTopo={ 40 } />
+            { /** nome do cliente */ }
+            <LabelCampo campo="Nome" obrigatorio={ true } margemTopo={ 20 } />
+            <CampoTextoPadrao
+                dadoControle={ nome }
+                habilitado={ idClienteEditar == 0 }
+                placeholder="Digite o nome..."
+                tamanhoMaximoCampo={ 255 }
+                onAlterarValor={ (nome) => {
+                    setNome(nome);
+                } } />
+            { /** cpf do cliente */ }
+            <LabelCampo campo="CPF" obrigatorio={ true } margemTopo={ 20 } />
+            <CampoTextoPadrao
+                dadoControle={ cpf }
+                habilitado={ idClienteEditar == 0 }
+                placeholder="Digite o cpf do cliente..."
+                tamanhoMaximoCampo={ 255 }
+                onAlterarValor={ (cpf) => {
+                    setCpf(cpf);
+                } } />
+            { /** rg do cliente */ }
+            <LabelCampo campo="RG" obrigatorio={ true } margemTopo={ 20 } />
+            <CampoTextoPadrao
+                dadoControle={ rg }
+                habilitado={ idClienteEditar == 0 }
+                placeholder="Digite o rg do cliente..."
+                tamanhoMaximoCampo={ 255 }
+                onAlterarValor={ (rg) => {
+                    setRg(rg);
+                } } />
+            { /** data de nascimento */ }
+            <LabelCampo campo="Data de nascimento" obrigatorio={ true } margemTopo={ 20 } />
+            <CampoTextoPadrao
+                dadoControle={ dataNascimento }
+                habilitado={ true }
+                placeholder="Digite a data de nascimento..."
+                tamanhoMaximoCampo={ 255 }
+                onAlterarValor={ (dataNascimento) => {
+                    setDataNascimento(dataNascimento);
+                } } />
         </View>
     }
 
@@ -54,8 +194,115 @@ const CadastroCliente = (props) => {
 
     }
 
+    // prosseguir com o cadastro/edicao do cliente
+    const prosseguirCadastroCliente = async () => {
+        console.log("Prosseguir para a tela de endereço...");
+
+        try {
+
+            if (validarFormulario()) {
+                const cliente = {
+                    id: idClienteEditar,
+                    tipoPessoa: tipoPessoaFisicaSelecionada ? "pf" : "pj",
+                    telefonePrincipal: telefonePrincipal.trim(),
+                    telefoneSecundario: telefoneSecundario.trim(),
+                    emailPrincipal: emailPrincipal.trim(),
+                    emailSecundario: emailSecundario.trim(),
+                    nome: nome.trim(),
+                    cpf: cpf.trim(),
+                    dataNascimento: dataNascimento.trim(),
+                    genero: genero,
+                    rg: rg.trim(),
+                    razaoSocial: razaoSocial.trim(),
+                    cnpj: cnpj.trim(),
+                    dataFundacao: dataFundacao.trim(),
+                    valorPatrimonio: valorPatrimonio
+                };
+
+                if (state.clientePassadoEntreTelas != null) {
+                    cliente.endereco = state.clientePassadoEntreTelas.endereco;
+                }
+
+                // setar o state global do cliente para passar entre telas
+                dispatch({
+                    type: "SET_CLIENTE_PASSAR_ENTRE_TELAS",
+                    payload: cliente
+                })
+
+                props.navigation.navigate("cadastro_cliente_endereco", {
+                    operacao: idClienteEditar == 0 ? "cadastro": "edicao"
+                });
+            } else {
+                console.log("Campos inválidos...");
+            }
+
+        } catch (e) {
+            console.log("Erro: " + e);
+        }
+
+    }
+
+    // cancelar o cadastro/edicao do cliente
+    const cancelar = async () => {
+
+        try {
+            // limpar o state global do cliente
+            dispatch({
+                type: "CLEAR_STAGE_SET_CLIENTE_PASSAR_ENTRE_TELAS"
+            });
+
+            props.navigation.goBack();
+        } catch (e) {
+
+        }
+
+    }
+
+    const validarFormulario = () => {
+
+        if (tipoPessoaFisicaSelecionada) {
+
+            return validarDadosPessoaFisica();
+        }
+
+        return validarDadosPessoaJuridica();
+    }
+
+    // validar dados da pessoa fisica
+    const validarDadosPessoaFisica = () => {
+        let ok = true;
+
+        /*if (telefonePrincipal.trim() === "") {
+            ok = false;
+            apresentarAlertaErro("Informe o telefone principal do cliente!");
+        }*/
+
+        return ok;
+    }
+
+    // validar dados da pessoa juridica
+    const validarDadosPessoaJuridica = () => {
+        let ok = true;
+
+        return ok;
+    }
+
+    const apresentarAlertaErro = (mensagem) => {
+        
+    }
+
     return <Tela>
         <ScrollView>
+            <ProgressoCadastroCliente
+                telaAtual="cadastro_cliente"
+                onRedirecionar={ (telaRedirecionar) => {
+
+                    // prosseguir com o cadastro do cliente -> tela de endereço do cliente
+                    if (telaRedirecionar == "cadastro_endereco_cliente") {
+                        prosseguirCadastroCliente();
+                    }
+
+                } } />
             <TituloTela titulo="Cadastro de cliente" />
             { /** container para o usuário selecionar o tipo de pessoa do cadastro/edição */ }
             <View style={ estilosCadastroCliente.containerSelecionarTipoPessoa }>
@@ -66,7 +313,22 @@ const CadastroCliente = (props) => {
                     setTipoPessoaJuridicaSelecionada(selecionado);
                 } } />
             </View>
+            { ContainerGeralCliente() }
             { obterContainerTipoPessoaSelecionada() }
+            <Botao
+                textoBotao="Prosseguir"
+                carregando={ apresentarLoader }
+                onPressionar={ () => {
+                    // prosseguir com o cadastro/edião do cliente
+                    prosseguirCadastroCliente();
+                } } />
+            <BotaoFundoTransparente
+                textoBotao="Cancelar"
+                margemBaixo={ 40 }
+                onPressionar={ () => {
+                    // cancelar operação
+                    cancelar();
+                } } />
         </ScrollView>
     </Tela>
 }

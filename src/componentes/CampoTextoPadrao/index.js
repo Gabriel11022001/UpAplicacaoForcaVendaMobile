@@ -2,10 +2,10 @@ import { StyleSheet, TextInput, View } from "react-native";
 import cores from "../../views/cores";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-const CampoTextoPadrao = (props) => {
+const CampoTextoPadrao = ({ icone, dadoControle, placeholder, onAlterarValor, tamanhoMaximoCampo, tipoCampo, habilitado, erro }) => {
 
     const obterIconeCampo = () => {
-        const icone = props.icone ?? "";
+        const icone = icone ?? "";
         const iconesExistem = [
             {
                 nome: "email",
@@ -44,17 +44,17 @@ const CampoTextoPadrao = (props) => {
     return (
         <View style={ [
             estilosCampoTextoPadrao.estiloCampoPadrao,
-            props.erro ? estilosCampoTextoPadrao.estiloCampoComErro : estilosCampoTextoPadrao.estiloCampoSemErro
+            erro ? estilosCampoTextoPadrao.estiloCampoComErro : estilosCampoTextoPadrao.estiloCampoSemErro
         ] }>
             { iconeCampo }
             <TextInput
                 style={ estilosCampoTextoPadrao.estiloCampoTextoInterno }
-                value={ props.dadoControle }
-                placeholder={ props.placeholder }
-                onChangeText={ (novoTexto) => props.onAlterarValor(novoTexto) }
-                maxLength={ props.tamanhoMaximoCampo }
-                secureTextEntry={ props.tipoCampo == "senha" ? true : false }
-                editable={ props.habilitado } />
+                value={ dadoControle }
+                placeholder={ placeholder }
+                onChangeText={ (novoTexto) => onAlterarValor(novoTexto) }
+                maxLength={ tamanhoMaximoCampo }
+                secureTextEntry={ tipoCampo == "senha" ? true : false }
+                editable={ habilitado } />
         </View>
     );
 }

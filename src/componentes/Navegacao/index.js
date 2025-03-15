@@ -11,6 +11,7 @@ import DetalhesProduto from "../../views/DetalhesProduto";
 import CadastroProduto from "../../views/CadastroProduto";
 import CadastroCliente from "../../views/CadastroCliente";
 import Clientes from "../../views/Clientes";
+import CadastroClienteEndereco from "../../views/CadastroClienteEndereco";
 
 const Navegacao = () => {
 
@@ -69,6 +70,11 @@ const Navegacao = () => {
             nome: "clientes",
             componente: Clientes,
             titulo: "Clientes"
+        },
+        {
+            nome: "cadastro_cliente_endereco",
+            componente: CadastroClienteEndereco,
+            titulo: "Endereço"
         }
     ];
 
