@@ -44,7 +44,8 @@ const CampoTextoPadrao = ({ icone, dadoControle, placeholder, onAlterarValor, ta
     return (
         <View style={ [
             estilosCampoTextoPadrao.estiloCampoPadrao,
-            erro ? estilosCampoTextoPadrao.estiloCampoComErro : estilosCampoTextoPadrao.estiloCampoSemErro
+            erro ? estilosCampoTextoPadrao.estiloCampoComErro : estilosCampoTextoPadrao.estiloCampoSemErro,
+            !habilitado ? estilosCampoTextoPadrao.estiloCampoBloqueado : false
         ] }>
             { iconeCampo }
             <TextInput
@@ -90,6 +91,9 @@ const estilosCampoTextoPadrao = StyleSheet.create({
     },
     estiloIconeCampo: {
 
+    },
+    estiloCampoBloqueado: {
+        backgroundColor: cores.corBordas
     }
 });
 

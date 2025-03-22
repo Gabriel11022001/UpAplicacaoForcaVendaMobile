@@ -2,12 +2,12 @@ import { StyleSheet, View } from "react-native";
 import cores from "../../views/cores";
 import { Picker } from "@react-native-picker/picker";
 
-export default function Spinner({ dadoSelecionado, onAlterarDadoSelecionado, opcoes }) {
+export default function Spinner({ dadoSelecionado, onAlterarDadoSelecionado, opcoes, habilitado }) {
 
     return (
         <View style={ estilosSpinner.containerSpinner }>
-            { console.log(dadoSelecionado) }
             <Picker
+                enabled={ habilitado }
                 selectedValue={ dadoSelecionado }
                 onValueChange={ (itemSelecionado, indiceItemSelecionado) => {
                     onAlterarDadoSelecionado(itemSelecionado);

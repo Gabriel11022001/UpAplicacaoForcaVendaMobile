@@ -9,8 +9,8 @@ import Botao from "../../componentes/Botao";
 import BotaoFundoTransparente from "../../componentes/BotaoFundoTransparente";
 import ProgressoCadastroCliente from "../../componentes/ProgressoCadastroCliente";
 import CampoTextoPadrao from "../../componentes/CampoTextoPadrao";
-import { useFocusEffect } from "@react-navigation/native";
 import { useGlobalContext } from "../../contextoGlobal/contextoGlobal";
+import apresentarAlertaErro from "../../utils/apresentarAlertaErro";
 
 const CadastroCliente = (props) => {
 
@@ -272,10 +272,25 @@ const CadastroCliente = (props) => {
     const validarDadosPessoaFisica = () => {
         let ok = true;
 
-        /*if (telefonePrincipal.trim() === "") {
+        if (telefonePrincipal.trim() == "") {
             ok = false;
-            apresentarAlertaErro("Informe o telefone principal do cliente!");
-        }*/
+            apresentarAlertaErro("Informe o telefone principal!");
+        } else if (emailPrincipal.trim() === "") {
+            ok = false;
+            apresentarAlertaErro("Informe o e-mail principal!");
+        } else if (cpf.trim() == "") {
+            ok = false;
+            apresentarAlertaErro("Informe o cpf!");
+        } else if (nome.trim() == "") {
+            ok = false;
+            apresentarAlertaErro("Informe o nome!");
+        } else if (dataNascimento.trim() == "") {
+            ok = false;
+            apresentarAlertaErro("Informe a data de nascimento!");
+        } else if (rg.trim() == "") {
+            ok = false;
+            apresentarAlertaErro("Informe o rg!");
+        }
 
         return ok;
     }
@@ -285,10 +300,6 @@ const CadastroCliente = (props) => {
         let ok = true;
 
         return ok;
-    }
-
-    const apresentarAlertaErro = (mensagem) => {
-        
     }
 
     return <Tela>
