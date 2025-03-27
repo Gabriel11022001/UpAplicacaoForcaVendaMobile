@@ -1,59 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import cores from "../../views/cores";
 import { FontAwesome5, MaterialIcons, Ionicons } from 'react-native-vector-icons';
+import Strings from "../../utils/strings";
 
-export default function MenuNavegacaoHome({ navigation }) {
-
-    const opcoesMenu = [
-        {
-            titulo: "Cadastro de categorias",
-            icone: "tags",
-            telaRedirecionar: "cadastro_categoria",
-            habilitado: true
-        },
-        {
-            titulo: "Cadastro de produtos",
-            icone: "product-hunt",
-            telaRedirecionar: "cadastro_produto",
-            habilitado: true
-        },
-        {
-            titulo: "Categorias",
-            icone: "list",
-            telaRedirecionar: "categorias",
-            habilitado: true
-        },
-        {
-            titulo: "Produtos",
-            icone: "barcode",
-            telaRedirecionar: "produtos",
-            habilitado: true
-        },
-        {
-            titulo: "Realizar venda",
-            icone: "store",
-            telaRedirecionar: "nova_venda",
-            habilitado: true
-        },
-        {
-            titulo: "Vendas",
-            icone: "price-change",
-            telaRedirecionar: "vendas",
-            habilitado: true
-        },
-        {
-            titulo: "Cadastro de clientes",
-            icone: "person-add-outline",
-            telaRedirecionar: "cadastro_cliente",
-            habilitado: true
-        },
-        {
-            titulo: "Clientes",
-            icone: "person-outline",
-            telaRedirecionar: "clientes",
-            habilitado: true
-        }
-    ];
+export default function MenuNavegacaoHome({ navigation, permissoes }) {
 
     const obterIconeCorreto = (icone) => {
 
@@ -72,10 +22,79 @@ export default function MenuNavegacaoHome({ navigation }) {
 
     const obterOpcoesMenu = () => {
 
-        const opcoesHabilitadas = opcoesMenu.filter((opcao) => {
+        /*if (permissoes.length == 0) {
 
-            return opcao.habilitado;
+            return <Text style={ estilosMenuNavegacaoHome.textoUsuarioNaoPossuiPermissoes }>
+                { Strings.usuarioNaoPossuiPermissoesCadastradas }
+            </Text>
+        }*/
+
+        // mapear as permissões para opções do menu
+        const opcoesHabilitadas = permissoes.map((permissao) => {
+            const opcao = {};
+
+            /*switch (permissao.nome) {
+                case "Cadastro de clientes":
+                    opcao.titulo = permissao.nome;
+                    opcao.icone = "person-add-outline";
+                    opcao.telaRedirecionar = "cadastro_cliente";
+                    break;
+                case "Gestão de clientes":
+                    opcao.titulo = "Clientes";
+                    opcao.icone = "person-outline";
+                    opcao.telaRedirecionar = "clientes";
+                    break;
+                case "Cadastro de categorias":
+                    opcao.titulo = permissao.nome;
+                    opcao.icone = "tags";
+                    opcao.telaRedirecionar = "cadastro_categoria";
+                    break;
+                case "Gestão de categorias":
+                    opcao.titulo = "Categorias";
+                    opcao.icone = "list";
+                    opcao.telaRedirecionar = "categorias";
+                    break;
+                case "Cadastro de produtos":
+                    opcao.titulo = permissao.nome;
+                    opcao.icone = "product-hunt";
+                    opcao.telaRedirecionar = "cadastro_produto";
+                    break;
+                case "Gestão de produtos":
+                    opcao.titulo = "Produtos";
+                    opcao.icone = "barcode";
+                    opcao.telaRedirecionar = "produtos";
+                    break;
+                case "Realizar venda":
+                    opcao.titulo = permissao.nome;
+                    opcao.icone = "store";
+                    opcao.telaRedirecionar = "nova_venda";
+                    break;
+                case "Gestão de vendas":
+                    opcao.titulo = "Vendas";
+                    opcao.icone = "price-change";
+                    opcao.telaRedirecionar = "vendas";
+                    break;
+                default: 
+                    opcao.titulo = "";
+                    opcao.icone = "";
+                    opcao.telaRedirecionar = "";
+            }*/
+
+            opcao.titulo = "Categorias";
+            opcao.icone = "list";
+            opcao.telaRedirecionar = "categorias";
+
+            return opcao;
         });
+
+        const opcao = {};
+        opcao.titulo = "Categorias";
+        opcao.icone = "list";
+        opcao.telaRedirecionar = "categorias";
+
+        opcoesHabilitadas.push(opcao);
+
+        console.log(opcoesHabilitadas);
 
         return opcoesHabilitadas.map((opcao) => {
 
@@ -129,5 +148,13 @@ const estilosMenuNavegacaoHome =  StyleSheet.create({
         textAlign: "center",
         textTransform: "uppercase",
         marginTop: 20
+    },
+    textoUsuarioNaoPossuiPermissoes: {
+        textAlign: "center",
+        width: "100%",
+        padding: 20,
+        color: cores.principal,
+        fontWeight: "bold",
+        fontSize: 18
     }
 });

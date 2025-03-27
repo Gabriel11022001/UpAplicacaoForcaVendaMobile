@@ -8,6 +8,7 @@ import Spinner from "../../componentes/Spinner";
 import BottomSheetConfirmar from "../../componentes/BottomSheetConfirmar";
 import Botao from "../../componentes/Botao";
 import BotaoFundoTransparente from "../../componentes/BotaoFundoTransparente";
+import Strings from "../../utils/strings";
 
 export default function CadastroProduto(props) {
 
@@ -123,7 +124,7 @@ export default function CadastroProduto(props) {
         <Tela>
             { apresentarBottomSheetNaoExistemCategorias ? <BottomSheetConfirmar
                 apresentarBotaoCancelar={ false }
-                mensagem="Não existem categorias cadastradas no banco de dados, não é possível continuar com a operação."
+                mensagem={ Strings.naoExistemCategoriasCadastradasNaoProsseguirOperacao }
                 onOperacaoBottomSheet={ () => {
                     props.navigation.goBack();
                 } } /> : false }

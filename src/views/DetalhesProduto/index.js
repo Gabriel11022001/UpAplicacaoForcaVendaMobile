@@ -7,6 +7,7 @@ import BotaoDeletar from "../../componentes/BotaoDeletar";
 import BottomSheetConfirmar from "../../componentes/BottomSheetConfirmar";
 import Loader from "../../componentes/Loader";
 import HistoricoEstoque from "../../componentes/HistoricoEstoque";
+import Strings from "../../utils/strings";
 
 export default function DetalhesProduto(props) {
 
@@ -14,7 +15,7 @@ export default function DetalhesProduto(props) {
     const [ produto, setProduto ] = useState({});
     const [ apresentarLoader, setApresentarLoader ] = useState(false);
     const [ apresentarBottomSheetConfirmarDeletarProduto, setApresentarBottomSheetConfirmarDeletarProduto ] = useState(false);
-    const [ msgLoader, setMsgLoader ] = useState("Carregando, aguarde...");
+    const [ msgLoader, setMsgLoader ] = useState(Strings.loaderConsultandoProdutoServidor);
 
     const buscarDetalhesProduto = async () => {
         console.log("Id produto consultar no back-end: " + produtoId);
@@ -31,7 +32,7 @@ export default function DetalhesProduto(props) {
     const deletarProduto = async () => {
         setApresentarBottomSheetConfirmarDeletarProduto(false);
         setApresentarLoader(true);
-        setMsgLoader("Deletando o produto no servidor, aguarde...");
+        setMsgLoader(Strings.loaderDeletandoProdutoServidor);
 
         try {
             
@@ -49,7 +50,7 @@ export default function DetalhesProduto(props) {
         <Tela>
             { apresentarLoader ? <Loader mensagem={ msgLoader } /> : false }
             { apresentarBottomSheetConfirmarDeletarProduto ? <BottomSheetConfirmar
-                mensagem="Deseja mesmo deletar o produto em questão?"
+                mensagem={ Strings.desejaDeletarProduto }
                 operacao="deletar"
                 onOperacaoBottomSheet={ deletarProduto }
                 onCancelar={ () => {

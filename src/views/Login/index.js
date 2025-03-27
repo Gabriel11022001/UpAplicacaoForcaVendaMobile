@@ -7,6 +7,9 @@ import CampoTextoPadrao from "../../componentes/CampoTextoPadrao";
 import Botao from "../../componentes/Botao";
 import CampoLogin from "../../componentes/CampoLogin";
 import BotaoLogin from "../../componentes/BotaoLogin";
+import login from "../../service/loginServico";
+import apresentarAlertaErro from "../../utils/apresentarAlertaErro";
+import { salvarDadosUsuarioLogado } from "../../utils/salvarDadosLocalmente";
 
 const Login = ({ navigation }) => {
 
@@ -78,16 +81,56 @@ const Login = ({ navigation }) => {
 
         try {
             // realizar login no servidor
-
-            habilitarCamposLogin();
+            const respRealizarLogin = await login(email.trim(), senha.trim());
+         
             setCarregandoRealizarLogin(false);
+            habilitarCamposLogin(true);
 
-            // efetivar login no servidor
-            navigation.navigate("home");
+            if (respRealizarLogin.data.ok) {
+                // efetivou o login com sucesso
+                const dadosUsuarioLogado = respRealizarLogin.data.conteudo;
+
+                if (dadosUsuarioLogado.status) {
+                    // pode acessar o app
+                    const usuario = {
+                        id: dadosUsuarioLogado.usuarioId,
+                        nome: dadosUsuarioLogado.nome,
+                        ativo: dadosUsuarioLogado.ativo,
+                        email: dadosUsuarioLogado.email,
+                        telefone: dadosUsuarioLogado.telefone,
+                        tokenValidacao: dadosUsuarioLogado.token,
+                        nivelAcesso: {
+                            nome: dadosUsuarioLogado.nivelAcessoUsuarioDTO.nome,
+                            ativo: dadosUsuarioLogado.nivelAcessoUsuarioDTO.ativo,
+                            permissoes: dadosUsuarioLogado.nivelAcessoUsuarioDTO.permissaoNivelAcessoUsuarioDTOS.map((permissao) => {
+
+                                return {
+                                    nomePermissao: permissao.nome
+                                };
+                            })
+                        }
+                    };
+
+                    // salvar os dados do usuário logado localmente
+                    await salvarDadosUsuarioLogado(usuario);
+
+                    // redirecionar o usuário para a tela home
+                    navigation.navigate("home");
+                } else {
+                    // o perfil está inativo, apresentar alerta de erro para o usuário
+                    apresentarAlertaErro("O perfil do usuário em questão está inativo, solicite ao administrador do sistema que habilite o perfil.");
+                }
+
+            } else {
+                // apresentar alerta de erro para o usuário
+                apresentarAlertaErro(respRealizarLogin.data.msg);
+            }
+
         } catch (e) {
             habilitarCamposLogin();
             setCarregandoRealizarLogin(false);
             // apresentar alerta de erro
+            apresentarAlertaErro("Erro ao tentar-se realizar login, tente novamente.");
         }
 
     }

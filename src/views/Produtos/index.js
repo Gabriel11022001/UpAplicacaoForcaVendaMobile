@@ -4,6 +4,7 @@ import Tela from "../../componentes/Tela";
 import FiltroProdutos from "../../componentes/FiltroProdutos";
 import { FlatList, Text } from "react-native";
 import ProdutoItem from "../../componentes/ProdutoItem";
+import Strings from "../../utils/strings";
 
 const Produtos = (props) => {
 
@@ -26,7 +27,7 @@ const Produtos = (props) => {
 
         if (produtos.length == 0) {
 
-            return <Text>Não existem produtos cadastrados no banco de dados.</Text>
+            return <Text>{ Strings.naoExistemProdutosCadastrados }</Text>
         }
 
         return <FlatList

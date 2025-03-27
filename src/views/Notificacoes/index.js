@@ -5,6 +5,7 @@ import NotificacaoItem from "../../componentes/NotificacaoItem";
 import { consultarNotificacoes } from "../../service/notificacaoServico";
 import LoaderCarregamento from "../../componentes/LoaderCarregamento";
 import axios from "axios";
+import Strings from "../../utils/strings";
 
 const { StyleSheet, Text, FlatList, Alert } = require("react-native");
 
@@ -22,8 +23,13 @@ const Notificacoes = (props) => {
         try {
             console.log("Consultando as notificações...");
             const resp = await consultarNotificacoes(1, 5);
-            console.log(resp.status);
-            console.log(resp.data);
+
+            setApresentarLoader(false);
+
+            if (resp.status == 200) {
+                setNotificacoes(resp.data.conteudo);
+            }
+
         } catch (e) {
             setApresentarLoader(false);
             // apresentar alerta de erro e redirecionar o usuário para a tela home
@@ -65,7 +71,7 @@ const Notificacoes = (props) => {
 
     const apresentarLoaderNotificacoes = () => {
 
-        return <LoaderCarregamento apresentar={ apresentarLoader } mensagem="Consultando as notificações no servidor, aguarde..." />
+        return <LoaderCarregamento apresentar={ apresentarLoader } mensagem={ Strings.loader } />
     }
 
     const apresentarAlertaErroConsultarNotificacoes = () => {
