@@ -1,64 +1,124 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import cores from "../../views/cores";
-import { FontAwesome5, MaterialIcons } from 'react-native-vector-icons';
+import { FontAwesome5, MaterialIcons, Ionicons } from 'react-native-vector-icons';
+import Strings from "../../utils/strings";
 
-export default function MenuNavegacaoHome({ navigation }) {
+export default function MenuNavegacaoHome({ navigation, permissoes }) {
 
-    const opcoesMenu = [
-        {
-            titulo: "Cadastro de categorias",
-            icone: "tags",
-            telaRedirecionar: "cadastro_categoria",
-            habilitado: true
-        },
-        {
-            titulo: "Cadastro de produtos",
-            icone: "product-hunt",
-            telaRedirecionar: "cadastro_produto",
-            habilitado: true
-        },
-        {
-            titulo: "Categorias",
-            icone: "list",
-            telaRedirecionar: "categorias",
-            habilitado: true
-        },
-        {
-            titulo: "Produtos",
-            icone: "barcode",
-            telaRedirecionar: "produtos",
-            habilitado: true
-        },
-        {
-            titulo: "Realizar venda",
-            icone: "store",
-            telaRedirecionar: "nova_venda",
-            habilitado: true
-        },
-        {
-            titulo: "Vendas",
-            icone: "price-change",
-            telaRedirecionar: "vendas",
-            habilitado: true
+    const obterIconeCorreto = (icone) => {
+
+        if (icone == "price-change") {
+
+            return <MaterialIcons name={ icone } size={ 40 } color={ cores.principal } />;
         }
-    ];
+
+        if (icone == "person-add-outline" || icone == "person-outline") {
+
+            return <Ionicons name={ icone } size={ 40 } color={ cores.principal } />
+        }
+
+        return <FontAwesome5 name={ icone } size={ 30 } color={ cores.principal } />;
+    }
 
     const obterOpcoesMenu = () => {
 
-        const opcoesHabilitadas = opcoesMenu.filter((opcao) => {
+        /*if (permissoes.length == 0) {
 
-            return opcao.habilitado;
+            return <Text style={ estilosMenuNavegacaoHome.textoUsuarioNaoPossuiPermissoes }>
+                { Strings.usuarioNaoPossuiPermissoesCadastradas }
+            </Text>
+        }*/
+
+        // mapear as permissões para opções do menu
+        const opcoesHabilitadas = permissoes.map((permissao) => {
+            const opcao = {};
+
+            /*switch (permissao.nome) {
+                case "Cadastro de clientes":
+                    opcao.titulo = permissao.nome;
+                    opcao.icone = "person-add-outline";
+                    opcao.telaRedirecionar = "cadastro_cliente";
+                    break;
+                case "Gestão de clientes":
+                    opcao.titulo = "Clientes";
+                    opcao.icone = "person-outline";
+                    opcao.telaRedirecionar = "clientes";
+                    break;
+                case "Cadastro de categorias":
+                    opcao.titulo = permissao.nome;
+                    opcao.icone = "tags";
+                    opcao.telaRedirecionar = "cadastro_categoria";
+                    break;
+                case "Gestão de categorias":
+                    opcao.titulo = "Categorias";
+                    opcao.icone = "list";
+                    opcao.telaRedirecionar = "categorias";
+                    break;
+                case "Cadastro de produtos":
+                    opcao.titulo = permissao.nome;
+                    opcao.icone = "product-hunt";
+                    opcao.telaRedirecionar = "cadastro_produto";
+                    break;
+                case "Gestão de produtos":
+                    opcao.titulo = "Produtos";
+                    opcao.icone = "barcode";
+                    opcao.telaRedirecionar = "produtos";
+                    break;
+                case "Realizar venda":
+                    opcao.titulo = permissao.nome;
+                    opcao.icone = "store";
+                    opcao.telaRedirecionar = "nova_venda";
+                    break;
+                case "Gestão de vendas":
+                    opcao.titulo = "Vendas";
+                    opcao.icone = "price-change";
+                    opcao.telaRedirecionar = "vendas";
+                    break;
+                default: 
+                    opcao.titulo = "";
+                    opcao.icone = "";
+                    opcao.telaRedirecionar = "";
+            }*/
+
+            return opcao;
         });
+
+        opcoesHabilitadas.push({
+            titulo: "Categorias",
+            icone: "list",
+            telaRedirecionar: "categorias"
+        });
+
+        opcoesHabilitadas.push({
+            titulo: "Clientes",
+            icone: "person-outline",
+            telaRedirecionar: "clientes"
+        });
+
+        opcoesHabilitadas.push({
+            titulo: "Produtos",
+            icone: "barcode",
+            telaRedirecionar: "produtos"
+        });
+
+        opcoesHabilitadas.push({
+            titulo: "Cadastro de produtos",
+            icone: "product-hunt",
+            telaRedirecionar: "cadastro_produto"
+        });
+
+        console.log(opcoesHabilitadas);
 
         return opcoesHabilitadas.map((opcao) => {
 
             return (
                 <TouchableOpacity
+                    key={ opcao.titulo }
                     style={ estilosMenuNavegacaoHome.opcaoMenu }
                     onPress={ () => {
                         navigation.navigate(opcao.telaRedirecionar);
                     } }>
-                    { opcao.icone == "price-change" ? <MaterialIcons name={ opcao.icone } size={ 40 } color={ cores.principal } /> : <FontAwesome5 name={ opcao.icone } size={ 30 } color={ cores.principal } /> }
+                    { obterIconeCorreto(opcao.icone) }
                     <Text style={ estilosMenuNavegacaoHome.textoOpcaoMenu }>{ opcao.titulo.toUpperCase() }</Text>
                 </TouchableOpacity>
             );
@@ -78,6 +138,7 @@ const estilosMenuNavegacaoHome =  StyleSheet.create({
         marginStart: "5%",
         marginEnd: "5%",
         marginTop: 20,
+        marginBottom: 200,
         flexDirection: "row",
         flexWrap: "wrap",
         alignItems: "center",
@@ -100,5 +161,13 @@ const estilosMenuNavegacaoHome =  StyleSheet.create({
         textAlign: "center",
         textTransform: "uppercase",
         marginTop: 20
+    },
+    textoUsuarioNaoPossuiPermissoes: {
+        textAlign: "center",
+        width: "100%",
+        padding: 20,
+        color: cores.principal,
+        fontWeight: "bold",
+        fontSize: 18
     }
 });

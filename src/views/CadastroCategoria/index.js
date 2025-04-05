@@ -9,6 +9,7 @@ import CampoTextoPadrao from "../../componentes/CampoTextoPadrao";
 import FeedbackErro from "../../componentes/FeedbackErro";
 import NavegacaoInferior from "../../componentes/NavegacaoInferior";
 import DialogSucessoOperacao from "../../componentes/DialogSucessoOperacao";
+import Spinner from "../../componentes/Spinner";
 
 const CadastroCategoria = (props) => {
 
@@ -18,7 +19,7 @@ const CadastroCategoria = (props) => {
     const [ apresentarLoader, setApresentarLoader ] = useState(false);
     const [ erroSalvarCategoria, setErroSalvarCategoria ] = useState("");
     const [ erroCampoNomeCategoria, setErroCampoNomeCategoria ] = useState("");
-    const [ apresentarDialogSucessoSalvarCategoria, setApresentarDialogSucessoSalvarCategoria ] = useState(true);
+    const [ apresentarDialogSucessoSalvarCategoria, setApresentarDialogSucessoSalvarCategoria ] = useState(false);
 
     const salvarCategoria = async () => {
 
@@ -115,9 +116,6 @@ const CadastroCategoria = (props) => {
                 onRedirecionar={ () => {
                     // redirecionar usuário para a tela de datalhes da categoria
                 } } />
-            <NavegacaoInferior onRedirecionar={ (telaRedirecionar) => {
-                props.navigation.navigate(telaRedirecionar);
-            } } />
             <ScrollView>
                 <TituloTela titulo="Cadastro de categoria" /> 
                 <LabelCampo campo="Nome da categoria" obrigatorio={ true } margemTopo={ 40 } />
@@ -130,6 +128,30 @@ const CadastroCategoria = (props) => {
                     tipoCampo="text"
                     erro={ erroCampoNomeCategoria != "" } />
                 <FeedbackErro mensagem={ erroCampoNomeCategoria } apresentar={ erroCampoNomeCategoria != "" } />
+                <LabelCampo campo="Status" obrigatorio={ true } margemTopo={ 20 } />
+                <Spinner
+                    dadoSelecionado={ status ? { key: 1, valor: "Ativo", habilitado: true } : { key: 2, valor: "Inativo", habilitado: true } }
+                    onAlterarDadoSelecionado={ (statusSelecionado) => {
+
+                        if (statusSelecionado == 1) {
+                            setStatus(true);
+                        } else {
+                            setStatus(false);
+                        }
+
+                    } }
+                    opcoes={ [ 
+                        {
+                            key: 1,
+                            valor: "Ativo",
+                            habilitado: true
+                        },
+                        {
+                            key: 2,
+                            valor: "Inativo",
+                            habilitado: true
+                        }
+                    ] } />
                 <Botao textoBotao={ categoriaIdEditar == 0 ? "Cadastrar" : "Salvar" } carregando={ apresentarLoader } onPressionar={ salvarCategoria }  />
                 <BotaoFundoTransparente textoBotao={ categoriaIdEditar == 0 ? "Cancelar cadastro" : "Cancelar edição" } onPressionar={ retornar } />
             </ScrollView>            
