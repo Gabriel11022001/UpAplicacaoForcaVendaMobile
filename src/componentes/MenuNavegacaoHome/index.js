@@ -101,6 +101,12 @@ export default function MenuNavegacaoHome({ navigation, permissoes }) {
             telaRedirecionar: "produtos"
         });
 
+        opcoesHabilitadas.push({
+            titulo: "Cadastro de produtos",
+            icone: "product-hunt",
+            telaRedirecionar: "cadastro_produto"
+        });
+
         console.log(opcoesHabilitadas);
 
         return opcoesHabilitadas.map((opcao) => {

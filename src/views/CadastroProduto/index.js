@@ -28,6 +28,7 @@ export default function CadastroProduto(props) {
         { valor: "Ativo", key: 1, habilitado: true },
         { valor: "Inativo", key: 0, habilitado: true }
     ];
+    const [ apresentarLoaderConsultandoCategorias, setApresentarLoaderConsultandoCategorias ] = useState(false);
 
     const obterCategoriaSelecionada = () => {
 
@@ -116,8 +117,20 @@ export default function CadastroProduto(props) {
 
     }
 
+    // consultar categorias no servidor
+    const consultarCategorias = async () => {
+        setApresentarLoaderConsultandoCategorias(true);
+
+        try {
+            
+        } catch (e) {
+            setApresentarLoaderConsultandoCategorias(false);
+        }
+
+    }
+
     useEffect(() => {
-        // validarExistemCategorias();
+        consultarCategorias();
     }, []);
 
     return (
@@ -137,19 +150,31 @@ export default function CadastroProduto(props) {
                     placeholder="Digite o nome do produto..."
                     onAlterarValor={ (novoNomeProdutoDigitado) => {
                         setNomeProduto(novoNomeProdutoDigitado);
-                    } } />
+                    } }
+                    habilitado={ true } />
+                { /** descrição do produto */ }
+                <LabelCampo campo="Descrição" obrigatorio={ true } margemTopo={ 30 } />
+                <CampoTextoPadrao
+                    dadoControle={ descricao }
+                    placeholder="Digite a descrição do produto..."
+                    onAlterarValor={ (novaDescricao) => {
+                        setDescricao(novaDescricao);
+                    } }
+                    habilitado={ true } />
                 { /** preço de compra do produto */ }
                 <LabelCampo campo="Preço de compra" obrigatorio={ true } margemTopo={ 20 } />
                 <CampoTextoPadrao 
                     dadoControle={ precoCompra } 
                     placeholder="Digite o preço de compra..." 
-                    onAlterarValor={ (novoPrecoCompra) => setPrecoCompra(novoPrecoCompra) } />
+                    onAlterarValor={ (novoPrecoCompra) => setPrecoCompra(novoPrecoCompra) }
+                    habilitado={ true } />
                 { /** preço de venda do produto */ }
                 <LabelCampo campo="Preço de venda" obrigatorio={ true } margemTopo={ 30 } />
                 <CampoTextoPadrao
                     dadoControle={ precoVenda }
                     placeholder="Digite o preço de venda..."
-                    onAlterarValor={ (novoPrecoVenda) => setPrecoVenda(novoPrecoVenda) } />
+                    onAlterarValor={ (novoPrecoVenda) => setPrecoVenda(novoPrecoVenda) }
+                    habilitado={ true } />
                 { /** status do produto */ }
                 <LabelCampo campo="Status" obrigatorio={ true } margemTopo={ 30 } />
                 <Spinner
