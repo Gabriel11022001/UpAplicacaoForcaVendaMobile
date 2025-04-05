@@ -80,19 +80,26 @@ export default function MenuNavegacaoHome({ navigation, permissoes }) {
                     opcao.telaRedirecionar = "";
             }*/
 
-            opcao.titulo = "Categorias";
-            opcao.icone = "list";
-            opcao.telaRedirecionar = "categorias";
-
             return opcao;
         });
 
-        const opcao = {};
-        opcao.titulo = "Categorias";
-        opcao.icone = "list";
-        opcao.telaRedirecionar = "categorias";
+        opcoesHabilitadas.push({
+            titulo: "Categorias",
+            icone: "list",
+            telaRedirecionar: "categorias"
+        });
 
-        opcoesHabilitadas.push(opcao);
+        opcoesHabilitadas.push({
+            titulo: "Clientes",
+            icone: "person-outline",
+            telaRedirecionar: "clientes"
+        });
+
+        opcoesHabilitadas.push({
+            titulo: "Produtos",
+            icone: "barcode",
+            telaRedirecionar: "produtos"
+        });
 
         console.log(opcoesHabilitadas);
 

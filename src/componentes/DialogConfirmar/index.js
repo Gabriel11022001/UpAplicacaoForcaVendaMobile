@@ -1,34 +1,35 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import cores from "../../views/cores";
+import Strings from "../../utils/strings";
 
 const DialogConfirmar = (props) => {
 
     return (
         <SafeAreaView style={ estilosDialogConfirmar.dialogConfirmar }>
             <View style={ estilosDialogConfirmar.cardCentralDialogConfirmar }>
-                <Text>Atenção!</Text>
-                <Text>{ props.mensagemDialogConfirmar }</Text>
-                <View style={ [
-                    estilosDialogConfirmar.viewSeparadorOpcoesDialogConfirmar,
-                    { marginTop: 40 }
-                ] } />
-                { /** botão de confirmar */ }
-                <TouchableOpacity 
-                    style={ estilosDialogConfirmar.botaoOpcaoDialogConfirmacao }
-                    onPress={ () => {
-                        props.onConfirmar();
-                    } }>
-                    <Text style={ estilosDialogConfirmar.textoBotaoDialogConfirmacao }>Confirmar</Text>
-                </TouchableOpacity>
-                <View style={ estilosDialogConfirmar.viewSeparadorOpcoesDialogConfirmar } />
-                { /** botão de cancelar */ }
-                <TouchableOpacity 
-                    style={ estilosDialogConfirmar.botaoOpcaoDialogConfirmacao }
-                    onPress={ () => {
-                        props.onCancelar();
-                    } }>
-                    <Text style={ estilosDialogConfirmar.textoBotaoDialogConfirmacao }>Cancelar</Text>
-                </TouchableOpacity>
+                { props.carregando ? <View style={ estilosDialogConfirmar.viewCarregando }>
+                    <ActivityIndicator color={ cores.principal } size={ 30 } />
+                    <Text style={ estilosDialogConfirmar.textCarregando }>{ Strings.loader }</Text>
+                </View> : <View>
+                    <Text style={ estilosDialogConfirmar.titulo }>Atenção!</Text>
+                    <Text style={ estilosDialogConfirmar.textoDialog }>{ props.mensagemDialogConfirmar }</Text>
+                    { /** botão de confirmar */ }
+                    <TouchableOpacity 
+                        style={ estilosDialogConfirmar.botaoOpcaoDialogConfirmacao }
+                        onPress={ () => {
+                            props.onConfirmar();
+                        } }>
+                        <Text style={ estilosDialogConfirmar.textoBotaoDialogConfirmacao }>Confirmar</Text>
+                    </TouchableOpacity>
+                    { /** botão de cancelar */ }
+                    <TouchableOpacity 
+                        style={ estilosDialogConfirmar.botaoOpcaoDialogConfirmacao }
+                        onPress={ () => {
+                            props.onCancelar();
+                        } }>
+                        <Text style={ estilosDialogConfirmar.textoBotaoDialogConfirmacao }>Cancelar</Text>
+                    </TouchableOpacity>
+                </View> }
             </View>
         </SafeAreaView>
     );
@@ -55,22 +56,41 @@ const estilosDialogConfirmar = StyleSheet.create({
         padding: 20,
         height: "auto"
     },
-    viewSeparadorOpcoesDialogConfirmar: {
-        width: "100%",
-        height: 1,
-        backgroundColor: cores.preto
-    },
     botaoOpcaoDialogConfirmacao: {
         width: "100%",
         alignItems: "center",
         justifyContent: "center",
-        padding: 15
+        padding: 15,
+        marginTop: 20,
+        backgroundColor: cores.corBordas,
+        borderRadius: 20
     },
     textoBotaoDialogConfirmacao: {
         color: cores.preto,
         fontWeight: "bold",
-        fontSize: 20,
+        fontSize: 16,
         textAlign: "center"
+    },
+    titulo: {
+        color: cores.principal,
+        fontWeight: "bold",
+        fontSize: 16
+    },
+    textoDialog: {
+        color: cores.preto,
+        marginTop: 10,
+        fontSize: 15
+    },
+    viewCarregando: {
+        width: "100%",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    textCarregando: {
+        color: cores.preto,
+        fontWeight: "bold",
+        marginTop: 10
     }
 });
 

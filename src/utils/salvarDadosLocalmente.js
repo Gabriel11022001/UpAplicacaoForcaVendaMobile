@@ -22,3 +22,15 @@ export async function getUsuarioLogado() {
 
     return null;
 }
+
+// obter token do usuário logado
+export async function getToken() {
+    const usuario = await getUsuarioLogado();
+
+    if (usuario != null) {
+
+        return usuario.tokenValidacao;
+    }
+
+    return "";
+}

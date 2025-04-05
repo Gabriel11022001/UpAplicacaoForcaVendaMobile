@@ -11,9 +11,11 @@ import ProgressoCadastroCliente from "../../componentes/ProgressoCadastroCliente
 import CampoTextoPadrao from "../../componentes/CampoTextoPadrao";
 import { useGlobalContext } from "../../contextoGlobal/contextoGlobal";
 import apresentarAlertaErro from "../../utils/apresentarAlertaErro";
+import { buscarClientePeloIdService } from "../../service/clienteService";
 
 const CadastroCliente = (props) => {
 
+    const [ apresentarLoaderConsultarClienteServidor, setApresentarLoaderConsultarClienteServidor ] = useState(false);
     const { state, dispatch } = useGlobalContext();
     const [ idClienteEditar, setIdClienteEditar ] = useState(0);
     const [ apresentarLoader, setApresentarLoader ] = useState(false);
@@ -44,6 +46,9 @@ const CadastroCliente = (props) => {
 
         if (props.route != null && props.route.params != null && props.route.params.idCliente != null) {
             setIdClienteEditar(props.route.params.idCliente);
+
+            // buscar cliente pelo id no servidor
+            buscarClientePeloIdServidor(props.route.params.idCliente);
         } else if (state != null && state.clientePassadoEntreTelas != null) {
             setIdClienteEditar(state.clientePassadoEntreTelas.id);
         }
@@ -51,11 +56,9 @@ const CadastroCliente = (props) => {
         if (state != null && state.clientePassadoEntreTelas != null) {
 
             if (state.clientePassadoEntreTelas.tipoPessoa == "pf") {
-                console.log("é pf");
                 setTipoPessoaFisicaSelecionada(true);
                 setTipoPessoaJuridicaSelecionada(false);
             } else {    
-                console.log("é pj");
                 setTipoPessoaJuridicaSelecionada(true);
                 setTipoPessoaFisicaSelecionada(false);
             }
@@ -300,6 +303,48 @@ const CadastroCliente = (props) => {
         let ok = true;
 
         return ok;
+    }
+
+    // consultar cliente no servidor
+    async function buscarClientePeloIdServidor(idClienteConsultar) {
+        console.log("Consultando no servidor o cliente com id_cliente = " + idClienteConsultar);
+        setApresentarLoaderConsultarClienteServidor(true);
+
+        try {
+            const respConsultarCliente = await buscarClientePeloIdService(idClienteConsultar);
+
+            setApresentarLoaderConsultarClienteServidor(false);
+
+            if (respConsultarCliente.data.msg == "Cliente encontrado com sucesso!") {
+                const cliente = { ...respConsultarCliente.data.conteudo };
+                
+                setTelefonePrincipal(cliente.telefonePrincipal);
+                setTelefoneSecundario(cliente.telefoneSecundario);
+                setEmailPrincipal(cliente.emailPrincipal);
+                setEmailSecundario(cliente.emailSecundario);
+
+                if (cliente.tipoPessoaNome == "pf") {
+                    setTipoPessoaFisicaSelecionada(true);
+                    setNome(cliente.nomeCompleto);
+                    setCpf(cliente.cpf);
+                    setRg(cliente.rg);
+                    // setDataNascimento(cliente.dataNascimento);
+                } else {
+                    setTipoPessoaJuridicaSelecionada(true);
+                }
+
+            } else {
+                // apresentar alerta de erro e redirecionar o usuário para a listagem de clientes
+
+            }
+
+        } catch (e) {
+            setApresentarLoaderConsultarClienteServidor(false);
+            // apresentar alerta de erro
+
+            console.log(e);
+        }
+
     }
 
     return <Tela>

@@ -131,6 +131,8 @@ const Login = ({ navigation }) => {
             setCarregandoRealizarLogin(false);
             // apresentar alerta de erro
             apresentarAlertaErro("Erro ao tentar-se realizar login, tente novamente.");
+
+            console.log(e);
         }
 
     }

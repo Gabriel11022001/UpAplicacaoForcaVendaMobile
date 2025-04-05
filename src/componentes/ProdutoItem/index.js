@@ -4,6 +4,9 @@ import { FontAwesome5 } from 'react-native-vector-icons';
 
 export default function ProdutoItem(props) {
 
+    const fotoProduto = props.fotoProduto != null && props.fotoProduto != "" 
+    ? props.fotoProduto : "https://cdn.pixabay.com/photo/2016/10/03/03/00/camera-1710849_1280.png";
+
     return (
         <TouchableOpacity
             style={ estilosProdutoItem.produtoItem }
@@ -11,7 +14,7 @@ export default function ProdutoItem(props) {
                 props.onVisualizarProduto();
             } } >
                 <Image style={ estilosProdutoItem.fotoProduto } source={ {
-                    uri: props.fotoProduto
+                    uri: fotoProduto
                 } } />
                 <View style={ estilosProdutoItem.containerDadosProduto }>
                     <Text style={ estilosProdutoItem.nomeProduto } >{ props.nomeProduto }</Text>

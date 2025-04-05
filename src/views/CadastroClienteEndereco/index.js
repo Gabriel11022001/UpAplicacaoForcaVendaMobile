@@ -67,6 +67,14 @@ export default function CadastroClienteEndereco(props) {
     ];
 
     useEffect(() => {
+
+        if (state.clientePassadoEntreTelas.endereco.cep == "" && operacao == "edicao") {
+            // buscar os dados do endereço do cliente no servidor
+
+            return;        
+        }
+
+        // preencher os campos com os dados do endereço passados entre as telas
         setCep(state.clientePassadoEntreTelas.endereco.cep);
         setLogradouro(state.clientePassadoEntreTelas.endereco.logradouro);
         setComplemento(state.clientePassadoEntreTelas.endereco.complemento);
