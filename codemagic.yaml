@@ -3,7 +3,6 @@ workflows:
     name: Build and Deploy
     environment:
       node: 16
-      flutter: latest
     scripts:
       - name: Install dependencies
         script: |
