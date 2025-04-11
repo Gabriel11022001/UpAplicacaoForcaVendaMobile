@@ -23,7 +23,7 @@ const estilosLoader = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: cores.corFundoDialogsELoaders,
+        backgroundColor: cores.principal,
         zIndex: 99999999999,
         padding: 30
     },

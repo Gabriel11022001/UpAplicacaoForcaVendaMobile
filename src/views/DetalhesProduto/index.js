@@ -8,6 +8,9 @@ import BottomSheetConfirmar from "../../componentes/BottomSheetConfirmar";
 import Loader from "../../componentes/Loader";
 import HistoricoEstoque from "../../componentes/HistoricoEstoque";
 import Strings from "../../utils/strings";
+import apresentarAlertaErro from "../../utils/apresentarAlertaErro";
+import buscarProdutoService from "../../service/buscarProdutoService";
+import deletarProdutoService from "../../service/deletarProduto";
 
 export default function DetalhesProduto(props) {
 
@@ -17,8 +20,45 @@ export default function DetalhesProduto(props) {
     const [ apresentarBottomSheetConfirmarDeletarProduto, setApresentarBottomSheetConfirmarDeletarProduto ] = useState(false);
     const [ msgLoader, setMsgLoader ] = useState(Strings.loaderConsultandoProdutoServidor);
 
+    // buscar detalhes do produto no servidor
     const buscarDetalhesProduto = async () => {
-        console.log("Id produto consultar no back-end: " + produtoId);
+
+        if (produtoId != null) {
+            console.log("Id produto consultar no back-end: " + produtoId);
+        
+            setApresentarLoader(true);
+
+            try {   
+                const respConsultarProduto = await buscarProdutoService(produtoId);
+
+                setApresentarLoader(false);
+
+                if (respConsultarProduto.data.msg == "Produto encontrado com sucesso!") {
+                    const prodServidor = { ...respConsultarProduto.data.conteudo };
+
+                    const produtoDetalhes = {
+                        id: prodServidor.produtoId,
+                        nome: prodServidor.nome,
+                        precoVenda: prodServidor.precoVenda,
+                        status: prodServidor.ativo,
+                        descricao: prodServidor.descricao,
+                        foto: prodServidor.urlFotoProduto,
+                        precoCompra: prodServidor.precoCompra,
+                        categoria: prodServidor.categoriaDTO.nome,
+                        estoque: prodServidor.estoque
+                    };
+
+                    setProduto(produtoDetalhes);
+                }
+
+            } catch (e) {
+                setApresentarLoader(false);
+                apresentarAlertaErro("Erro ao tentar-se buscar os dados do produto no servidor.");
+                console.log(e);
+            }
+            
+        }
+
     }
 
     const editarProduto = () => {
@@ -29,15 +69,30 @@ export default function DetalhesProduto(props) {
         setApresentarBottomSheetConfirmarDeletarProduto(true);
     }
 
+    // deletar produto no servidor
     const deletarProduto = async () => {
         setApresentarBottomSheetConfirmarDeletarProduto(false);
         setApresentarLoader(true);
         setMsgLoader(Strings.loaderDeletandoProdutoServidor);
 
         try {
-            
-        } catch (e) {
+            const respDeletarProduto = await deletarProdutoService(produtoId);
 
+            setApresentarLoader(false);
+
+            if (respDeletarProduto.data.msg == "Produto deletado com sucesso!") {
+                // redirecionar o usuário para a tela de listagem de produtos
+                props.navigation.navigate("produtos", {
+                    retornouTelaDeletarProduto: true
+                });
+            } else {
+                // apresentar alerta de erro
+                apresentarAlertaErro(respDeletarProduto.data.msg);
+            }
+
+        } catch (e) {
+            setApresentarLoader(false);
+            apresentarAlertaErro("Erro ao tentar-se deletar o produto.");
         }
 
     }
@@ -56,9 +111,10 @@ export default function DetalhesProduto(props) {
                 onCancelar={ () => {
                     setApresentarBottomSheetConfirmarDeletarProduto(false);
                 } } /> : false }
-            <ScrollView>
+            { !apresentarLoader ? <ScrollView>
                 <Image style={estilosDetalhesProduto.imagemProduto} source={{
-                    uri: "https://cdn.pixabay.com/photo/2025/02/22/17/45/food-9424463_1280.jpg"
+                    uri: produto.foto != "" && produto.foto != null ? produto.foto 
+                    : "https://cdn.pixabay.com/photo/2016/10/03/03/00/camera-1710849_1280.png"
                 }} />
                 { /** detalhes do produto */}
                 <View style={estilosDetalhesProduto.containerDetalhesProduto}>
@@ -68,23 +124,23 @@ export default function DetalhesProduto(props) {
                         { marginTop: 20 }
                     ]}>
                         <Text style={estilosDetalhesProduto.tituloContainerItem}>Produto</Text>
-                        <Text>Nome do produto</Text>
+                        <Text>{ produto.nome }</Text>
                     </View>
                     <View style={estilosDetalhesProduto.containerDetalhesItem}>
                         <Text style={estilosDetalhesProduto.tituloContainerItem}>Preço de venda</Text>
-                        <Text>R$12.99</Text>
+                        <Text>{ `R$${ produto.precoVenda }` }</Text>
                     </View>
                     <View style={estilosDetalhesProduto.containerDetalhesItem}>
                         <Text style={estilosDetalhesProduto.tituloContainerItem}>Status</Text>
-                        <Text>Em estoque</Text>
+                        <Text>{ produto.status ? "Em estoque" : "Não possui unidades em estoque" }</Text>
                     </View>
                     <View style={estilosDetalhesProduto.containerDetalhesItem}>
                         <Text style={estilosDetalhesProduto.tituloContainerItem}>Unidades em estoque</Text>
-                        <Text>1000 unidades</Text>
+                        <Text>{ `${ produto.estoque } unidades` }</Text>
                     </View>
                     <View style={estilosDetalhesProduto.containerDescricao}>
                         <Text style={estilosDetalhesProduto.tituloContainerItem}>Descrição</Text>
-                        <Text>Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado. Se popularizou na década de 60, quando a Letraset lançou decalques contendo passagens de Lorem Ipsum, e mais recentemente quando passou a ser integrado a softwares de editoração eletrônica como Aldus PageMaker.</Text>
+                        <Text>{ produto.descricao }</Text>
                     </View>
                 </View>
                 <HistoricoEstoque historicoEstoque={ [
@@ -120,7 +176,7 @@ export default function DetalhesProduto(props) {
                 }} />
                 { /** deletar produto */}
                 <BotaoDeletar textoBotao="Deletar" onDeletar={() => confirmarDeletarProduto()} margemBaixo={70} />
-            </ScrollView>
+            </ScrollView> : false }
         </Tela>
     );
 }
