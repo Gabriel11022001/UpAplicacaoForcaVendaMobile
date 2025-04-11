@@ -96,6 +96,16 @@ const Produtos = (props) => {
     }
 
     useEffect(() => {
+
+        if (props.route.params != null) {
+
+            if (produtos.route.params.retornouTelaDeletarProduto != null && produtos.route.params.retornouTelaDeletarProduto) {
+                // apresentar alerta de sucesso indicando que um produto foi deletado com sucesso
+                console.log("deletou o produto com sucesso!");
+            }
+
+        }
+
         buscarProdutos();
     }, []);
 

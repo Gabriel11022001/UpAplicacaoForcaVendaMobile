@@ -9,6 +9,7 @@ import BottomSheetConfirmar from "../../componentes/BottomSheetConfirmar";
 import Botao from "../../componentes/Botao";
 import BotaoFundoTransparente from "../../componentes/BotaoFundoTransparente";
 import Strings from "../../utils/strings";
+import Loader from "../../componentes/Loader";
 
 export default function CadastroProduto(props) {
 
@@ -130,11 +131,15 @@ export default function CadastroProduto(props) {
     }
 
     useEffect(() => {
+        // consultar categorias de produtos no servidor
         consultarCategorias();
     }, []);
 
     return (
         <Tela>
+            { /** loader de carregando categorias */ }
+            { apresentarLoaderConsultandoCategorias ? <Loader mensagem={ Strings.loader } /> : false }
+            { /** bottom sheet informando que não existem categorias cadastradas */ }
             { apresentarBottomSheetNaoExistemCategorias ? <BottomSheetConfirmar
                 apresentarBotaoCancelar={ false }
                 mensagem={ Strings.naoExistemCategoriasCadastradasNaoProsseguirOperacao }
