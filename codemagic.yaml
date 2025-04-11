@@ -6,20 +6,20 @@ workflows:
     scripts:
       - name: Install dependencies
         script: |
-          npm i -g expo-cli
+          npm install -g expo-cli@latest
           npm install
       - name: Check Expo CLI Installation
         script: |
-          expo --version
+          npx expo-cli --version
       - name: Build APK
         script: |
-          expo build:android --no-publish --non-interactive
+          npx expo-cli build:android --no-publish --non-interactive
       - name: Build AAB
         script: |
-          expo build:android --type app-bundle --no-publish --non-interactive
+          npx expo-cli build:android --type app-bundle --no-publish --non-interactive
       - name: Deploy to Expo
         script: |
-          expo publish --non-interactive
+          npx expo-cli publish --non-interactive
     artifacts:
       - build/*.apk
       - build/*.aab
