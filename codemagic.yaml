@@ -6,8 +6,11 @@ workflows:
     scripts:
       - name: Install dependencies
         script: |
-          npm install expo@latest
+          npm install -g expo-cli@latest
           npm install
+      - name: Check Expo CLI Installation
+        script: |
+          expo --version
       - name: Build APK
         script: |
           expo build:android --no-publish --non-interactive
