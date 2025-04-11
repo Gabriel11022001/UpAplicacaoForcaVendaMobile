@@ -4,12 +4,12 @@ workflows:
     environment:
       node: 18.18
     scripts:
-      - name: Install dependencies
+      - name: Install Dependencies
+        script: |
+          npm install
+      - name: Install New Expo CLI
         script: |
           npm install -g expo-cli@latest
-          npm install
-      - name: Check Expo CLI Installation
-        script: |
           npx expo-cli --version
       - name: Build APK
         script: |
