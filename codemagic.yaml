@@ -1,10 +1,13 @@
 workflows:
   build_and_deploy:
-    name: Build e deploy do app UpOnlineAFV
+    name: Build and Deploy
+    environment:
+      node: 16
+      flutter: latest
     scripts:
-      - name: Instalar dependencias
+      - name: Install dependencies
         script: |
-          npm install -g expo-cli
+          npm install -g expo-cli@latest
           npm install
       - name: Build APK
         script: |
@@ -12,7 +15,7 @@ workflows:
       - name: Build AAB
         script: |
           expo build:android --type app-bundle --no-publish --non-interactive
-      - name: Deploy no Expo
+      - name: Deploy to Expo
         script: |
           expo publish --non-interactive
     artifacts:
